@@ -144,7 +144,7 @@ export const UploadOrders = (props) => {
                           <Select>
                             {
                               configAlphabet.map((alphabet) => (
-                                <Select.Option value={alphabet}>{alphabet}</Select.Option>
+                                <Select.Option value={alphabet} key={alphabet}>{alphabet}</Select.Option>
                               ))
                             }
                           </Select>
@@ -174,7 +174,7 @@ export const UploadOrders = (props) => {
                           <Select>
                             {
                               configAlphabet.map((alphabet) => (
-                                <Select.Option value={alphabet}>{alphabet}</Select.Option>
+                                <Select.Option value={alphabet} key={alphabet}>{alphabet}</Select.Option>
                               ))
                             }
                           </Select>
@@ -189,7 +189,7 @@ export const UploadOrders = (props) => {
                           <Select>
                             {
                               configAlphabet.map((alphabet) => (
-                                <Select.Option value={alphabet}>{alphabet}</Select.Option>
+                                <Select.Option value={alphabet} key={alphabet}>{alphabet}</Select.Option>
                               ))
                             }
                           </Select>
