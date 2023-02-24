@@ -23,9 +23,9 @@ const items = [
     title: 'Dashboard'
   },
   {
-    href: '/customers',
+    href: '/orders',
     icon: (<UsersIcon fontSize="small" />),
-    title: 'Customers'
+    title: 'Orders'
   },
   {
     href: '/products',

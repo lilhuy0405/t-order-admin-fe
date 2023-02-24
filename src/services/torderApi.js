@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 import axiosClient from './axiosClient';
 
 const torderApi = {
@@ -14,8 +15,11 @@ const torderApi = {
         });
         return res;
     },
-    getOrders: async (q) => {
-        const res = await axiosClient.get('/orders', { params: { q } });
+    getOrders: async (params = {}) => {
+      
+        const queryStringRes = queryString.stringify(params)
+    
+        const res = await axiosClient.get(`/orders?${queryStringRes}`);
         return res;
     },
     getLastestOrders: async () => {

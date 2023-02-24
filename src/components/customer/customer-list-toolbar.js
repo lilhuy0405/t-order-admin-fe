@@ -26,28 +26,9 @@ export const CustomerListToolbar = (props) => (
         sx={{ m: 1 }}
         variant="h4"
       >
-        Customers
+        List Orders
       </Typography>
-      <Box sx={{ m: 1 }}>
-        <Button
-          startIcon={(<UploadIcon fontSize="small" />)}
-          sx={{ mr: 1 }}
-        >
-          Import
-        </Button>
-        <Button
-          startIcon={(<DownloadIcon fontSize="small" />)}
-          sx={{ mr: 1 }}
-        >
-          Export
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-        >
-          Add Customers
-        </Button>
-      </Box>
+  
     </Box>
     <Box sx={{ mt: 3 }}>
       <Card>
@@ -67,8 +48,15 @@ export const CustomerListToolbar = (props) => (
                   </InputAdornment>
                 )
               }}
-              placeholder="Search customer"
+              placeholder="Search orders"
               variant="outlined"
+              onChange={(e) => {
+                props.setSearchParams({
+                  ...props.searchParams,
+                  q: e.target.value,
+                  page: 1,
+                })
+              }}
             />
           </Box>
         </CardContent>
