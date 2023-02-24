@@ -4,10 +4,18 @@ import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
-
+import useAuth from 'src/hooks/useAuth';
+import { notification } from 'antd';
+import { useEffect } from 'react';
 
 const Login = () => {
   const router = useRouter();
+  const { login, user } = useAuth();
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user]);
   const formik = useFormik({
     initialValues: {
       email: 'demo@devias.io',
@@ -27,8 +35,20 @@ const Login = () => {
         .required(
           'Password is required')
     }),
-    onSubmit: () => {
-      router.push('/');
+    onSubmit: async () => {
+      //get form values
+      const { email, password } = formik.values;
+      //login
+      try {
+        const data = await login(email, password);
+        router.push('/');
+
+      } catch (error) {
+        console.log(error);
+        notification.error({
+          message: 'Login failed: ' + error.message,
+        })
+      }
     }
   });
 
@@ -47,8 +67,8 @@ const Login = () => {
         }}
       >
         <Container maxWidth="sm">
-          <Box style={{display: 'flex', justifyContent: 'center'}}>
-            <img src='/static/images/torder-logo.jpg' width='400'/>
+          <Box style={{ display: 'flex', justifyContent: 'center' }}>
+            <img src='/static/images/torder-logo.jpg' width='400' />
           </Box>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>

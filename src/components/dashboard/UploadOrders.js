@@ -1,8 +1,9 @@
 import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
-import { Form, Upload, Button, Table, Row, Col, Input, Select, InputNumber } from 'antd';
+import { Form, Upload, Button, Table, Row, Col, Input, Select, InputNumber, notification } from 'antd';
 import { fi } from 'date-fns/locale';
 import { useState } from 'react';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
+import torderApi from 'src/services/torderApi';
 
 const ALLOWED_TYPES = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -44,7 +45,9 @@ export const UploadOrders = (props) => {
   const [file, setFile] = useState(null);
   const [rows, setRows] = useState([]);
   const [cols, setCols] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [configAlphabet, setConfigAlphabet] = useState([]);
+  const [form] = Form.useForm();
   const handleChooseFile = ({ file }) => {
     ExcelRenderer(file, (err, resp) => {
       if (err) {
@@ -84,6 +87,43 @@ export const UploadOrders = (props) => {
     });
     setFile(file);
   }
+
+  const handleFinish = async (values) => {
+    try {
+      setLoading(true);
+
+      if (!file) {
+        throw new Error('Please choose file');
+      }
+      const formData = new FormData();
+      console.log(file);
+      formData.append('file', file);
+      formData.append('shipCodeColumn', values.shipCodeColumn);
+      formData.append('phoneColumn', values.phoneColumn);
+      formData.append('productColumn', values.productColumn);
+      formData.append('customerNameColumn', values.customerNameColumn);
+      formData.append('dataStartRow', values.dataStartRow);
+      const res = await torderApi.uploadOrder(formData);
+      console.log(res);
+
+      notification.success({
+        message: 'Upload success added ' + res.length + ' orders',
+        placement: 'bottomRight'
+      });
+      form.resetFields();
+      setFile(null);
+
+    } catch (error) {
+      console.log(error);
+      notification.error({
+        message: error.message,
+        placement: 'bottomRight'
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <Card {...props}>
       <CardHeader
@@ -97,7 +137,13 @@ export const UploadOrders = (props) => {
           }}
         >
 
-          <Form>
+          <Form
+            name='upload-orders'
+            layout='vertical'
+            onFinish={handleFinish}
+            form={form}
+
+          >
             <Upload.Dragger
               accept={ALLOWED_TYPES.join(', ')}
               showUploadList={false}
@@ -140,6 +186,10 @@ export const UploadOrders = (props) => {
                         <Form.Item
                           label='Shipcode column'
                           name='shipCodeColumn'
+                          rules={[
+                            { required: true, message: 'Please select shipcode column' }
+                          ]}
+
                         >
                           <Select>
                             {
@@ -155,6 +205,9 @@ export const UploadOrders = (props) => {
                         <Form.Item
                           label='Phone column'
                           name='phoneColumn'
+                          rules={[
+                            { required: true, message: 'Please select phone column' }
+                          ]}
                         >
                           <Select>
                             {
@@ -170,6 +223,9 @@ export const UploadOrders = (props) => {
                         <Form.Item
                           label='Product column'
                           name='productColumn'
+                          rules={[
+                            { required: true, message: 'Please select product column' }
+                          ]}
                         >
                           <Select>
                             {
@@ -200,6 +256,9 @@ export const UploadOrders = (props) => {
                         <Form.Item
                           label='Data start row'
                           name='dataStartRow'
+                          rules={[
+                            { required: true, message: 'Please select data start row' }
+                          ]}
                         >
                           <InputNumber min={1} step={1} max={rows.length} />
                         </Form.Item>
@@ -212,8 +271,11 @@ export const UploadOrders = (props) => {
             }
 
             <div>
-              <Button style={{ width: '100%', margin: '20px' }} type='primary' htmlType='submit'>
-                Upload
+              <Button style={{ width: '100%', margin: '20px' }} type='primary' htmlType='submit' disabled={loading}>
+                {
+
+                  loading ? 'Processing...' : 'Upload'
+                }
               </Button>
             </div>
           </Form>

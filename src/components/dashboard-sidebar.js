@@ -119,7 +119,7 @@ export const DashboardSidebar = (props) => {
                   color="inherit"
                   variant="subtitle1"
                 >
-                  Acme Inc
+                  Torder admin
                 </Typography>
                 <Typography
                   color="neutral.400"
