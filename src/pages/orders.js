@@ -14,7 +14,7 @@ const Customers = () => {
     page: 1,
     q: ''
   });
-  const { data: listOrders = { orders: [], currentPage: 1, totalPages: 1 } } = useQuery(['torderApi.getOrders', searchParams], ({ queryKey }) => torderApi.getOrders(queryKey[1]), {
+  const { data: listOrders = { orders: [], currentPage: 1, totalPages: 1 }, refetch } = useQuery(['torderApi.getOrders', searchParams], ({ queryKey }) => torderApi.getOrders(queryKey[1]), {
     keepPreviousData: true,
   })
   console.log(listOrders);
@@ -34,9 +34,9 @@ const Customers = () => {
         }}
       >
         <Container maxWidth={false}>
-          <CustomerListToolbar setSearchParams={setSearchParams}/>
+          <CustomerListToolbar setSearchParams={setSearchParams} />
           <Box sx={{ mt: 3 }}>
-            <CustomerListResults orders={listOrders} />
+            <CustomerListResults orders={listOrders} reFetchOrders={refetch} />
           </Box>
           <div style={{ margin: '10px 0', display: 'flex', justifyContent: "center" }}>
             <Pagination
@@ -52,7 +52,7 @@ const Customers = () => {
               pageSize={10}
               defaultPageSize={10}
               showSizeChanger={false}
-              
+
             />
           </div>
         </Container>

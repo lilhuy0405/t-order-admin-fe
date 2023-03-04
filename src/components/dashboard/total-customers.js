@@ -1,9 +1,12 @@
 import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import PeopleIcon from '@mui/icons-material/PeopleOutlined';
+import { useQuery } from 'react-query';
+import torderApi from 'src/services/torderApi';
 
 export const TotalCustomers = (props) => {
-  
+  const { data: number = 0, isError, isFetching } = useQuery('torderApi.countAllOrders', () => torderApi.countAllOrders())
+
   return (
     <Card {...props}>
       <CardContent>
@@ -24,7 +27,7 @@ export const TotalCustomers = (props) => {
               color="textPrimary"
               variant="h4"
             >
-              1,6k
+              {number}
             </Typography>
           </Grid>
           <Grid item>
@@ -46,21 +49,6 @@ export const TotalCustomers = (props) => {
             pt: 2
           }}
         >
-          <ArrowUpwardIcon color="success" />
-          <Typography
-            variant="body2"
-            sx={{
-              mr: 1
-            }}
-          >
-            16%
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="caption"
-          >
-            Since last month
-          </Typography>
         </Box>
       </CardContent>
     </Card>
