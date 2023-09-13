@@ -91,6 +91,9 @@ export const CustomerListResults = ({ orders, reFetchOrders, ...rest }) => {
                   Source File
                 </TableCell>
                 <TableCell>
+                  Shipping Unit
+                </TableCell>
+                <TableCell>
                   Actions
                 </TableCell>
               </TableRow>
@@ -113,6 +116,7 @@ export const CustomerListResults = ({ orders, reFetchOrders, ...rest }) => {
                   <TableCell>
                     {order.product}
                   </TableCell>
+
                   <TableCell>
                     {order.sourceFile ? (
                       <a href={`${API_URL}/uploads/${order.sourceFile}`}>
@@ -121,6 +125,9 @@ export const CustomerListResults = ({ orders, reFetchOrders, ...rest }) => {
                     ) : (
                       <span>Not updated</span>
                     )}
+                  </TableCell>
+                  <TableCell>
+                    {order.shippingUnit ? order.shippingUnit?.name : 'Not updated'}
                   </TableCell>
                   <TableCell>
                     <Button danger onClick={() => {

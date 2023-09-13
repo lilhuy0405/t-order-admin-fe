@@ -1,15 +1,27 @@
 import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
-import { Form, Upload, Button, Table, Row, Col, Input, Select, InputNumber, notification } from 'antd';
+import {
+  Form,
+  Upload,
+  Button,
+  Table,
+  Row,
+  Col,
+  Input,
+  Select,
+  InputNumber,
+  notification
+} from 'antd';
 import { fi } from 'date-fns/locale';
 import { useState } from 'react';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import torderApi from 'src/services/torderApi';
+import { useQuery } from 'react-query';
 
 const ALLOWED_TYPES = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   'application/vnd.ms-excel'
 
-]
+];
 const alphabets = [
   'A',
   'B',
@@ -38,8 +50,8 @@ const alphabets = [
   'Y',
   'Z',
   'AA',
-  'AB',
-]
+  'AB'
+];
 export const UploadOrders = (props) => {
   const theme = useTheme();
   const [file, setFile] = useState(null);
@@ -48,36 +60,41 @@ export const UploadOrders = (props) => {
   const [loading, setLoading] = useState(false);
   const [configAlphabet, setConfigAlphabet] = useState([]);
   const [form] = Form.useForm();
+  const {
+    data: shippingUnits = [],
+    isLoading: shippingUnitsLoading
+  } =
+    useQuery(['torderApi.getListShippingUnits'], () => torderApi.getListShippingUnits());
+
   const handleChooseFile = ({ file }) => {
     ExcelRenderer(file, (err, resp) => {
       if (err) {
         console.log(err);
-      }
-      else {
+      } else {
         // normilize data for atd table
         const cols = resp.cols.map((col) => {
           return {
             title: col.name,
             dataIndex: col.key,
-            key: col.key,
-          }
+            key: col.key
+          };
         });
         const configColNames = alphabets.slice(0, resp.cols.length);
         const antdTableColumns = [
           {
             title: '',
             dataIndex: 'counter',
-            key: 'counter',
+            key: 'counter'
           },
-          ...cols,
-        ]
+          ...cols
+        ];
 
         const antdTableData = resp.rows.map((row, index) => {
           return {
             key: row[0],
             counter: index + 1,
             ...row
-          }
+          };
         });
 
         setCols(antdTableColumns);
@@ -86,7 +103,7 @@ export const UploadOrders = (props) => {
       }
     });
     setFile(file);
-  }
+  };
 
   const handleFinish = async (values) => {
     try {
@@ -103,6 +120,9 @@ export const UploadOrders = (props) => {
       formData.append('productColumn', values.productColumn);
       formData.append('customerNameColumn', values.customerNameColumn);
       formData.append('dataStartRow', values.dataStartRow);
+      if (values.shippingUnitId) {
+        formData.append('shippingUnitId', values.shippingUnitId);
+      }
       const res = await torderApi.uploadOrder(formData);
       console.log(res);
 
@@ -118,18 +138,18 @@ export const UploadOrders = (props) => {
       notification.error({
         message: error.message,
         placement: 'bottomRight'
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Card {...props}>
       <CardHeader
         title="Upload Orders file"
       />
-      <Divider />
+      <Divider/>
       <CardContent>
         <Box
           sx={{
@@ -138,8 +158,8 @@ export const UploadOrders = (props) => {
         >
 
           <Form
-            name='upload-orders'
-            layout='vertical'
+            name="upload-orders"
+            layout="vertical"
             onFinish={handleFinish}
             form={form}
 
@@ -148,11 +168,11 @@ export const UploadOrders = (props) => {
               accept={ALLOWED_TYPES.join(', ')}
               showUploadList={false}
               customRequest={handleChooseFile}
-              className='mb-24'
+              className="mb-24"
               height={160}
             >
 
-              <div className='flex-row justify-content-center'>
+              <div className="flex-row justify-content-center">
 
                 <Box sx={{ my: 2 }}>
                   Drag order excel file here.
@@ -168,7 +188,7 @@ export const UploadOrders = (props) => {
               file && (
                 <>
                   <Box sx={{ my: 2 }}>
-                    <Typography variant='h6'>Preview: {file.name}</Typography>
+                    <Typography variant="h6">Preview: {file.name}</Typography>
                   </Box>
                   <Table
                     columns={cols}
@@ -178,14 +198,14 @@ export const UploadOrders = (props) => {
                     pagination={{ pageSize: 5 }}
                   />
 
-                  <Divider />
+                  <Divider/>
                   <Box sx={{ mx: 2 }}>
-                    <Typography variant='h6'>Data configs</Typography>
+                    <Typography variant="h6">Data configs</Typography>
                     <Row gutter={24}>
                       <Col span={6}>
                         <Form.Item
-                          label='Shipcode column'
-                          name='shipCodeColumn'
+                          label="Shipcode column"
+                          name="shipCodeColumn"
                           rules={[
                             { required: true, message: 'Please select shipcode column' }
                           ]}
@@ -194,7 +214,8 @@ export const UploadOrders = (props) => {
                           <Select>
                             {
                               configAlphabet.map((alphabet) => (
-                                <Select.Option value={alphabet} key={alphabet}>{alphabet}</Select.Option>
+                                <Select.Option value={alphabet}
+                                               key={alphabet}>{alphabet}</Select.Option>
                               ))
                             }
                           </Select>
@@ -203,8 +224,8 @@ export const UploadOrders = (props) => {
 
                       <Col span={6}>
                         <Form.Item
-                          label='Phone column'
-                          name='phoneColumn'
+                          label="Phone column"
+                          name="phoneColumn"
                           rules={[
                             { required: true, message: 'Please select phone column' }
                           ]}
@@ -212,7 +233,8 @@ export const UploadOrders = (props) => {
                           <Select>
                             {
                               configAlphabet.map((alphabet) => (
-                                <Select.Option value={alphabet} key={alphabet}>{alphabet}</Select.Option>
+                                <Select.Option value={alphabet}
+                                               key={alphabet}>{alphabet}</Select.Option>
                               ))
                             }
                           </Select>
@@ -221,8 +243,8 @@ export const UploadOrders = (props) => {
 
                       <Col span={6}>
                         <Form.Item
-                          label='Product column'
-                          name='productColumn'
+                          label="Product column"
+                          name="productColumn"
                           rules={[
                             { required: true, message: 'Please select product column' }
                           ]}
@@ -230,7 +252,8 @@ export const UploadOrders = (props) => {
                           <Select>
                             {
                               configAlphabet.map((alphabet) => (
-                                <Select.Option value={alphabet} key={alphabet}>{alphabet}</Select.Option>
+                                <Select.Option value={alphabet}
+                                               key={alphabet}>{alphabet}</Select.Option>
                               ))
                             }
                           </Select>
@@ -239,28 +262,48 @@ export const UploadOrders = (props) => {
 
                       <Col span={6}>
                         <Form.Item
-                          label='Customer name column'
-                          name='customerNameColumn'
+                          label="Customer name column"
+                          name="customerNameColumn"
                         >
                           <Select>
                             {
                               configAlphabet.map((alphabet) => (
-                                <Select.Option value={alphabet} key={alphabet}>{alphabet}</Select.Option>
+                                <Select.Option value={alphabet}
+                                               key={alphabet}>{alphabet}</Select.Option>
                               ))
                             }
                           </Select>
                         </Form.Item>
                       </Col>
 
+
                       <Col span={6}>
                         <Form.Item
-                          label='Data start row'
-                          name='dataStartRow'
+                          label="Data start row"
+                          name="dataStartRow"
                           rules={[
                             { required: true, message: 'Please select data start row' }
                           ]}
                         >
-                          <InputNumber min={1} step={1} max={rows.length} />
+                          <InputNumber min={1} step={1} max={rows.length}/>
+                        </Form.Item>
+                      </Col>
+
+
+                      <Col span={6}>
+                        <Form.Item
+                          label="Shipping Unit"
+                          name="shippingUnitId"
+                        >
+                          <Select style={{ width: '100%' }}>
+                            {
+                              shippingUnits.map((shippingUnit) => (
+                                <Select.Option value={shippingUnit.id} key={shippingUnit.id}>
+                                  {shippingUnit.name}
+                                </Select.Option>
+                              ))
+                            }
+                          </Select>
                         </Form.Item>
                       </Col>
                     </Row>
@@ -271,7 +314,8 @@ export const UploadOrders = (props) => {
             }
 
             <div>
-              <Button style={{ width: '100%', margin: '20px' }} type='primary' htmlType='submit' disabled={loading}>
+              <Button style={{ width: '100%', margin: '20px' }} type="primary" htmlType="submit"
+                      disabled={loading}>
                 {
 
                   loading ? 'Processing...' : 'Upload'
@@ -282,6 +326,6 @@ export const UploadOrders = (props) => {
 
         </Box>
       </CardContent>
-    </Card >
+    </Card>
   );
 };

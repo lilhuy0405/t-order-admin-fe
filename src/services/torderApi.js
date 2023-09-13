@@ -17,7 +17,7 @@ const torderApi = {
   },
   getOrders: async (params = {}) => {
 
-    const queryStringRes = queryString.stringify(params)
+    const queryStringRes = queryString.stringify(params);
 
     const res = await axiosClient.get(`/orders?${queryStringRes}`);
     return res;
@@ -43,8 +43,19 @@ const torderApi = {
 
   deleteAnOrder: async (shipCode, phoneNumber) => {
     const res = await axiosClient.delete(`/orders/${phoneNumber}/${shipCode}`);
+  },
+  getListShippingUnits: async () => {
+    const res = await axiosClient.get('/shipping-units');
+    return res;
+  },
+
+  createShippingUnit: async (data = {}) => {
+    const res = await axiosClient.post('/shipping-units', data);
+  },
+  updateShippingUnit: async (id, data = {}) => {
+    const res = await axiosClient.put('/shipping-units/' + id, data);
   }
 
-}
+};
 
-export default torderApi
+export default torderApi;
