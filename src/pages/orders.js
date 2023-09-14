@@ -11,12 +11,17 @@ import { Pagination } from 'antd';
 const Customers = () => {
   const [searchParams, setSearchParams] = useState({
     limit: 10,
-    page: 1,
-    q: ''
+    page: 0,
+    q: '',
+    sortBy: "createdAt",
+    sortDirection: "desc"
   });
-  const { data: listOrders = { orders: [], currentPage: 1, totalPages: 1 }, refetch } = useQuery(['torderApi.getOrders', searchParams], ({ queryKey }) => torderApi.getOrders(queryKey[1]), {
-    keepPreviousData: true,
-  })
+  const { data: listOrdersData, refetch } = useQuery(['torderApi.getOrders', searchParams],
+    ({ queryKey }) => torderApi.getOrders(queryKey[1]),
+    {
+      keepPreviousData: true
+    });
+  const { contents: listOrders = [], totalElements = 0 } = listOrdersData || {};
   console.log(listOrders);
 
   return (
@@ -34,24 +39,24 @@ const Customers = () => {
         }}
       >
         <Container maxWidth={false}>
-          <CustomerListToolbar setSearchParams={setSearchParams} />
+          <CustomerListToolbar setSearchParams={setSearchParams}/>
           <Box sx={{ mt: 3 }}>
-            <CustomerListResults orders={listOrders} reFetchOrders={refetch} />
+            <CustomerListResults orders={listOrders} reFetchOrders={refetch}/>
           </Box>
-          <div style={{ margin: '10px 0', display: 'flex', justifyContent: "center" }}>
+          <div style={{ margin: '10px 0', display: 'flex', justifyContent: 'center' }}>
             <Pagination
-              current={searchParams.page}
+              current={searchParams.page + 1}
               defaultCurrent={1}
-              onChange={(page) => {
+              onChange={(page, limit) => {
                 setSearchParams({
                   ...searchParams,
-                  page: page,
-                })
+                  page: page - 1,
+                  limit: limit
+                });
               }}
-              total={listOrders.totalPages * 10}
-              pageSize={10}
-              defaultPageSize={10}
-              showSizeChanger={false}
+              total={totalElements}
+              pageSize={searchParams.limit}
+              showSizeChanger={true}
 
             />
           </div>
@@ -59,7 +64,7 @@ const Customers = () => {
       </Box>
     </>
   );
-}
+};
 Customers.getLayout = (page) => (
   <DashboardLayout>
     {page}

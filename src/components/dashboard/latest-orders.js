@@ -20,12 +20,16 @@ import { useQuery } from 'react-query';
 import torderApi from 'src/services/torderApi';
 import moment from 'moment';
 import { useRouter } from 'next/router';
+
 export const LatestOrders = (props) => {
-  const { data: latestOrders = [], isLoading: isLoadingOrders, isError: isErrorOrder } = useQuery('torderApi.getLastestOrders', () => torderApi.getLastestOrders())
+  const { data: latestOrderData = {}, isLoading: isLoadingOrders, isError: isErrorOrder } = useQuery(
+    'torderApi.getLastestOrders',
+    () => torderApi.getLastestOrders());
+  const {contents: latestOrders = []} = latestOrderData;
   const router = useRouter();
   return (
     <Card {...props}>
-      <CardHeader title="Latest Orders" />
+      <CardHeader title="Latest Orders"/>
       <PerfectScrollbar>
         <Box sx={{ minWidth: 800 }}>
           <Table>
@@ -84,11 +88,11 @@ export const LatestOrders = (props) => {
       >
         <Button
           color="primary"
-          endIcon={<ArrowRightIcon fontSize="small" />}
+          endIcon={<ArrowRightIcon fontSize="small"/>}
           size="small"
           variant="text"
           onClick={() => {
-            router.push('/orders')
+            router.push('/orders');
           }}
         >
           View all
@@ -96,4 +100,4 @@ export const LatestOrders = (props) => {
       </Box>
     </Card>
   );
-}
+};

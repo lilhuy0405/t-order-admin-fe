@@ -99,22 +99,22 @@ export const CustomerListResults = ({ orders, reFetchOrders, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.orders.map((order, index) => (
+              {orders.map((order, index) => (
                 <TableRow
                   hover
                   key={index}
                 >
                   <TableCell>
-                    {order.shipCode}
+                    {order?.shipCode}
                   </TableCell>
                   <TableCell>
-                    {order.customerName}
+                    {order?.customerName}
                   </TableCell>
                   <TableCell>
-                    {order.phoneNumber}
+                    {order?.phoneNumber}
                   </TableCell>
                   <TableCell>
-                    {order.product}
+                    {order?.product}
                   </TableCell>
 
                   <TableCell>
@@ -160,6 +160,4 @@ export const CustomerListResults = ({ orders, reFetchOrders, ...rest }) => {
   );
 };
 
-CustomerListResults.propTypes = {
-  customers: PropTypes.array.isRequired
-};
+

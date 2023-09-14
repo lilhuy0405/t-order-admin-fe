@@ -4,11 +4,11 @@ import axiosClient from './axiosClient';
 const torderApi = {
   login: async (data = {}) => {
     console.log(data);
-    const res = await axiosClient.post('/login', data);
+    const res = await axiosClient.post('/auth/login', data);
     return res;
   },
   uploadOrder: async (data = {}) => {
-    const res = await axiosClient.post('/upload-orders', data, {
+    const res = await axiosClient.post('/orders/upload', data, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -16,24 +16,29 @@ const torderApi = {
     return res;
   },
   getOrders: async (params = {}) => {
-
-    const queryStringRes = queryString.stringify(params);
-
-    const res = await axiosClient.get(`/orders?${queryStringRes}`);
+    console.log(params);
+    const res = await axiosClient.get(`/orders`, { params });
     return res;
   },
   getLastestOrders: async () => {
-    const res = await axiosClient.get('/latest-orders');
+    const res = await axiosClient.get('/orders', {
+      params: {
+        limit: 10,
+        page: 0,
+        sortBy: 'createdAt',
+        sortDirection: 'DESC'
+      }
+    });
     return res;
   },
 
   countAllOrders: async () => {
-    const res = await axiosClient.get('/orders-count');
+    const res = await axiosClient.get('/orders/count');
     return res;
   },
 
   deleteBySource: async (source) => {
-    const res = await axiosClient.delete(`/orders-by-source`, {
+    const res = await axiosClient.delete(`/orders/by-source`, {
       data: {
         sourceFile: source
       }
