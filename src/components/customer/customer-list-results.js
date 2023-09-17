@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { getInitials } from '../../utils/get-initials';
 import moment from 'moment';
-import { API_URL } from 'src/constants';
+import { API_BASE_URL, API_URL } from 'src/constants';
 import { Button, Modal, message, notification } from 'antd';
 import torderApi from 'src/services/torderApi';
 
@@ -119,7 +119,7 @@ export const CustomerListResults = ({ orders, reFetchOrders, ...rest }) => {
 
                   <TableCell>
                     {order.sourceFile ? (
-                      <a href={`${API_URL}/uploads/${order.sourceFile}`}>
+                      <a href={`${API_BASE_URL}/uploads/${order.sourceFile}`}>
                         {minimizeFileName(order.sourceFile)}
                       </a>
                     ) : (
