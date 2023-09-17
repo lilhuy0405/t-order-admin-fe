@@ -4,11 +4,9 @@ import PeopleIcon from '@mui/icons-material/PeopleOutlined';
 import { useQuery } from 'react-query';
 import torderApi from 'src/services/torderApi';
 
-export const TotalCustomers = (props) => {
-  const { data: number = 0, isError, isFetching } = useQuery('torderApi.countAllOrders', () => torderApi.countAllOrders())
-
+export const TotalCustomers = ({amount, title, icon}) => {
   return (
-    <Card {...props}>
+    <Card >
       <CardContent>
         <Grid
           container
@@ -21,13 +19,13 @@ export const TotalCustomers = (props) => {
               gutterBottom
               variant="overline"
             >
-              TOTAL ORDERS
+              {title}
             </Typography>
             <Typography
               color="textPrimary"
               variant="h4"
             >
-              {number}
+              {amount}
             </Typography>
           </Grid>
           <Grid item>
@@ -38,7 +36,7 @@ export const TotalCustomers = (props) => {
                 width: 56
               }}
             >
-              <PeopleIcon />
+              {icon}
             </Avatar>
           </Grid>
         </Grid>

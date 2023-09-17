@@ -7,14 +7,16 @@ import { useQuery } from 'react-query';
 import torderApi from 'src/services/torderApi';
 import { useState } from 'react';
 import { Pagination } from 'antd';
+import usePrivateRoute from '../hooks/usePrivateRoute';
 
 const Customers = () => {
+  usePrivateRoute();
   const [searchParams, setSearchParams] = useState({
     limit: 10,
     page: 0,
     q: '',
-    sortBy: "createdAt",
-    sortDirection: "desc"
+    sortBy: 'createdAt',
+    sortDirection: 'desc'
   });
   const { data: listOrdersData, refetch } = useQuery(['torderApi.getOrders', searchParams],
     ({ queryKey }) => torderApi.getOrders(queryKey[1]),
@@ -39,7 +41,7 @@ const Customers = () => {
         }}
       >
         <Container maxWidth={false}>
-          <CustomerListToolbar setSearchParams={setSearchParams}/>
+          <CustomerListToolbar setSearchParams={setSearchParams} searchParams={searchParams}/>
           <Box sx={{ mt: 3 }}>
             <CustomerListResults orders={listOrders} reFetchOrders={refetch}/>
           </Box>

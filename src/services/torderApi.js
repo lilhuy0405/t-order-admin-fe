@@ -59,6 +59,18 @@ const torderApi = {
   },
   updateShippingUnit: async (id, data = {}) => {
     const res = await axiosClient.put('/shipping-units/' + id, data);
+  },
+  findAllCustomers: async (params = {}) => {
+    const res = await axiosClient.get('/customers', { params });
+    return res;
+  },
+  findAllProducts: async (params = {}) => {
+    const res = await axiosClient.get('/products', { params });
+    return res;
+  },
+  dashBoardReport: async (params = {}) => {
+    const res = await axiosClient.get('/dashboard', { params });
+    return res;
   }
 
 };
