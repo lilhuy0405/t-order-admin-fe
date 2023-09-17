@@ -13,7 +13,7 @@ import usePrivateRoute from 'src/hooks/usePrivateRoute';
 
 const Dashboard = () => {
   usePrivateRoute();
-  
+
 
 
   return (
@@ -51,7 +51,7 @@ const Dashboard = () => {
               sm={6}
               xs={12}
             >
-              {/* <TotalCustomers /> */}
+               <TotalCustomers />
             </Grid>
             <Grid
               item
@@ -60,7 +60,7 @@ const Dashboard = () => {
               sm={6}
               xs={12}
             >
-              {/* <TasksProgress /> */}
+               <TasksProgress />
             </Grid>
             <Grid
               item
@@ -69,24 +69,24 @@ const Dashboard = () => {
               sm={6}
               xs={12}
             >
-              {/* <TotalProfit sx={{ height: '100%' }} /> */}
+               <TotalProfit sx={{ height: '100%' }} />
             </Grid>
+
+
             <Grid
               item
-              lg={12}
+              lg={6}
               md={12}
-              xl={12}
+              xl={6}
               xs={12}
             >
-              <UploadOrders />
+              <LatestOrders />
             </Grid>
-
-
             <Grid
               item
-              lg={12}
+              lg={6}
               md={12}
-              xl={12}
+              xl={6}
               xs={12}
             >
               <LatestOrders />

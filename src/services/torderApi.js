@@ -23,7 +23,7 @@ const torderApi = {
   getLastestOrders: async () => {
     const res = await axiosClient.get('/orders', {
       params: {
-        limit: 10,
+        limit: 5,
         page: 0,
         sortBy: 'createdAt',
         sortDirection: 'DESC'
