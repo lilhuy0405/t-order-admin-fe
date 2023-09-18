@@ -60,6 +60,9 @@ const torderApi = {
   updateShippingUnit: async (id, data = {}) => {
     const res = await axiosClient.put('/shipping-units/' + id, data);
   },
+  deleteShippingUnit: async (id) => {
+    const res = await axiosClient.delete('/shipping-units/' + id);
+  },
   findAllCustomers: async (params = {}) => {
     const res = await axiosClient.get('/customers', { params });
     return res;
