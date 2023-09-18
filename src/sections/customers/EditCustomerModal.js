@@ -1,10 +1,10 @@
-import {Button, Form, Input, Modal} from 'antd';
-import {useEffect, useState} from 'react';
-import torderApi from '../../services/torderApi';
-import toast from 'react-hot-toast';
-import {LoadingOutlined} from '@ant-design/icons';
+import {Button, Form, Input, InputNumber, Modal} from "antd";
+import {useEffect, useState} from "react";
+import toast from "react-hot-toast";
+import {LoadingOutlined} from "@ant-design/icons";
+import torderApi from "../../services/torderApi";
 
-const EditShippingUnitModal = ({isOpen, setIsOpen, toEdit, refetchShippingUnit}) => {
+const EditCustomerModal = ({isOpen, setIsOpen, toEdit, refetchCustomers}) => {
     const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(false);
     const handleCancel = () => {
@@ -15,31 +15,31 @@ const EditShippingUnitModal = ({isOpen, setIsOpen, toEdit, refetchShippingUnit})
         form.setFieldsValue({...toEdit});
     }, [toEdit]);
 
-    const handleEditShippingUnit = async (values) => {
+    const handleEditCustomer = async (values) => {
         try {
-          setIsLoading(true);
-          const editShippingUnitData = await torderApi.updateShippingUnit(toEdit?.id, values);
-          refetchShippingUnit();
-          form.resetFields();
-          setIsOpen(false);
+            setIsLoading(true);
+            const editCustomerData = await torderApi.updateCustomer(toEdit?.id, values);
+            refetchCustomers();
+            form.resetFields();
+            setIsOpen(false);
         } catch (err) {
-          throw new Error(err.message);
+            throw new Error(err.message);
         } finally {
-          setIsLoading(false);
+            setIsLoading(false);
         }
 
     };
 
-    const submitEditShippingUnit = (values) => {
-        toast.promise(handleEditShippingUnit(values), {
-            success: () => "Edit Shipping Unit success!",
-            loading: () => "Editing Shipping Unit...",
+    const submitEditCustomer = (values) => {
+        toast.promise(handleEditCustomer(values), {
+            success: () => "Edit Customer success!",
+            loading: () => "Editing Customer...",
             error: (err) => `${err}`,
         })
     }
 
     return (
-        <Modal title="Edit Shipping Unit"
+        <Modal title="Edit Customer"
                width={600}
                open={isOpen}
                onOk={() => form.submit()}
@@ -64,7 +64,7 @@ const EditShippingUnitModal = ({isOpen, setIsOpen, toEdit, refetchShippingUnit})
             <Form
                 layout="vertical"
                 form={form}
-                onFinish={(values) => submitEditShippingUnit(values)}
+                onFinish={(values) => submitEditCustomer(values)}
             >
                 <Form.Item
                     label="Name"
@@ -72,7 +72,7 @@ const EditShippingUnitModal = ({isOpen, setIsOpen, toEdit, refetchShippingUnit})
                     rules={[
                         {
                             required: true,
-                            message: 'Please input shipping unit name!'
+                            message: 'Please input customer name!'
                         }
                     ]}
                 >
@@ -80,12 +80,12 @@ const EditShippingUnitModal = ({isOpen, setIsOpen, toEdit, refetchShippingUnit})
                 </Form.Item>
 
                 <Form.Item
-                    label="Tracking Website"
-                    name="trackingWebsite"
+                    label="Phone"
+                    name="phone"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input tracking website!'
+                            message: 'Please input customer phone number!'
                         }
                     ]}
                 >
@@ -93,20 +93,15 @@ const EditShippingUnitModal = ({isOpen, setIsOpen, toEdit, refetchShippingUnit})
                 </Form.Item>
 
                 <Form.Item
-                    label="App Name"
-                    name="appName"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input App Name!'
-                        }
-                    ]}
+                    label="Address"
+                    name="address"
                 >
                     <Input/>
                 </Form.Item>
+
             </Form>
         </Modal>
     );
 };
 
-export default EditShippingUnitModal;
+export default EditCustomerModal;

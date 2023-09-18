@@ -24,3 +24,7 @@ export function toIndexColName(colName) {
 export function fromByteToMB(byte) {
   return (byte / 1024 / 1024).toFixed(2);
 }
+
+export const formatPrice = (price) => {
+  return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}

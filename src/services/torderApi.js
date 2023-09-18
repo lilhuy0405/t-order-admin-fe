@@ -56,19 +56,34 @@ const torderApi = {
 
   createShippingUnit: async (data = {}) => {
     const res = await axiosClient.post('/shipping-units', data);
+    return res;
   },
   updateShippingUnit: async (id, data = {}) => {
     const res = await axiosClient.put('/shipping-units/' + id, data);
+    return res;
   },
   deleteShippingUnit: async (id) => {
     const res = await axiosClient.delete('/shipping-units/' + id);
+    return res;
   },
   findAllCustomers: async (params = {}) => {
     const res = await axiosClient.get('/customers', { params });
     return res;
   },
+  updateCustomer: async (id, data) => {
+    const res = await axiosClient.put('/customers/' + id, data);
+    return res;
+  },
+  getCustomerOrdersById: async (id) => {
+    const res = await axiosClient.get('/customers/'+ id + '/orders');
+    return res;
+  },
   findAllProducts: async (params = {}) => {
     const res = await axiosClient.get('/products', { params });
+    return res;
+  },
+  updateProduct: async (id, data) => {
+    const res = await axiosClient.put('/products/' + id, data);
     return res;
   },
   dashBoardReport: async (params = {}) => {

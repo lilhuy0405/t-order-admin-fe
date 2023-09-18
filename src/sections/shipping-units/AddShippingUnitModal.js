@@ -36,7 +36,7 @@ const AddShippingUnitModal = ({ isOpen, setIsOpen , refetchShippingUnit}) => {
   }
 
   return (
-    <Modal title="Basic Modal"
+    <Modal title="Add Shipping Unit"
            width={600}
            open={isOpen}
            onOk={() => form.submit()}
