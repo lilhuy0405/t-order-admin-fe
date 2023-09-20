@@ -25,7 +25,7 @@ export const TotalCustomers = ({amount, title, icon}) => {
               color="textPrimary"
               variant="h4"
             >
-              {amount}
+              {amount.toLocaleString()}
             </Typography>
           </Grid>
           <Grid item>

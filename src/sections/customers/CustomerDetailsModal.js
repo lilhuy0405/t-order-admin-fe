@@ -46,7 +46,7 @@ const CustomerDetailsModal = ({ isOpen, setIsOpen, toShow }) => {
       key: 'amount',
       title: 'Amount',
       dataIndex: 'amount',
-      render: (amount) => <span>{amount ?? 'N/A'}</span>
+      render: (amount) => <span>{amount?.toLocaleString() ?? 'N/A'}</span>
     },
     {
       title: 'Created At',
