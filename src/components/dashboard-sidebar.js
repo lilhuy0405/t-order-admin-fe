@@ -14,37 +14,38 @@ import { Logo } from './logo';
 import { NavItem } from './nav-item';
 import { MdLocalShipping, MdProductionQuantityLimits } from 'react-icons/md';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
+import { TORDER_PROFILE } from 'src/constants';
 
 const items = [
   {
     href: '/',
-    icon: (<ChartBarIcon fontSize="small"/>),
+    icon: (<ChartBarIcon fontSize="small" />),
     title: 'Dashboard'
   },
   {
     href: '/upload-orders',
-    icon: (<AiOutlineCloudUpload/>),
+    icon: (<AiOutlineCloudUpload />),
     title: 'Upload Orders'
   },
   {
     href: '/orders',
-    icon: (<ShoppingCartIcon/>),
+    icon: (<ShoppingCartIcon />),
     title: 'Orders'
   },
 
   {
     href: '/products',
-    icon: (<MdProductionQuantityLimits/>),
+    icon: (<MdProductionQuantityLimits />),
     title: 'Products'
   },
   {
     href: '/customers',
-    icon: (<UserIcon fontSize="small"/>),
+    icon: (<UserIcon fontSize="small" />),
     title: 'Customers'
   },
   {
     href: '/shipping-units',
-    icon: (<MdLocalShipping/>),
+    icon: (<MdLocalShipping />),
     title: 'Shipping Units'
   }
 ];
@@ -87,7 +88,7 @@ export const DashboardSidebar = (props) => {
               passHref
             >
               <a>
-                <img src="/static/images/torder-logo.jpg" width="200"/>
+                <img src="/static/images/torder-logo.jpg" width="200" />
               </a>
             </NextLink>
           </Box>
@@ -146,7 +147,7 @@ export const DashboardSidebar = (props) => {
             />
           ))}
         </Box>
-        <Divider sx={{ borderColor: '#2D3748' }}/>
+        <Divider sx={{ borderColor: '#2D3748' }} />
         <Box
           sx={{
             px: 2,
@@ -181,21 +182,22 @@ export const DashboardSidebar = (props) => {
               src="/static/images/sidebar_pro.png"
             />
           </Box>
-          <NextLink
-            href="https://material-kit-pro-react.devias.io/"
-            passHref
+
+          <Button
+            color="secondary"
+            component="a"
+            endIcon={(<OpenInNewIcon />)}
+            fullWidth
+            sx={{ mt: 2 }}
+            variant="contained"
+            onClick={() => {
+              localStorage.removeItem(TORDER_PROFILE)
+              router.push('/login');
+            }}
           >
-            <Button
-              color="secondary"
-              component="a"
-              endIcon={(<OpenInNewIcon/>)}
-              fullWidth
-              sx={{ mt: 2 }}
-              variant="contained"
-            >
-              Pro Live Preview
-            </Button>
-          </NextLink>
+            Logout
+          </Button>
+
         </Box>
       </Box>
     </>
