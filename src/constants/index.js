@@ -1,7 +1,7 @@
 export const TORDER_PROFILE = 'TORDER_PROFILE';
-export const API_URL = 'https://torder-api.click/api/v1';
+export const API_URL = 'https://lilhuytorder.vinhomes.co.uk/api/v1';
 
-export const API_BASE_URL = 'https://torder-api.click';
+export const API_BASE_URL = 'https://lilhuytorder.vinhomes.co.uk';
 
 // export const API_URL = 'http://localhost:8080/api/v1';
 
